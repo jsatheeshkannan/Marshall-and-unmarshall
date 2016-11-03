@@ -14,7 +14,7 @@ public class Marshall {
 	public void setApril(April april) {
 		this.april = april;
 	}
-	private UnMarshall um;
+	
 	private JAXBContext context;
 	
 	public void test1(){
