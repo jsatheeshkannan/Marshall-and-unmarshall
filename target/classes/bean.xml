@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+               http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+<bean id="april" class="org.vmware.jaxb.April">
+	<property name="days" value="30"></property>
+	<property name="month" value="04"></property>
+	<property name="holiday" value="5"></property>
+</bean>
+<bean id="marshall" class="org.vmware.jaxb.Marshall">
+	<property name="april" ref="april"></property>
+</bean>
+
+</beans>
