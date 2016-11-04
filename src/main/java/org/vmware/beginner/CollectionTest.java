@@ -2,6 +2,8 @@ package org.vmware.beginner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class CollectionTest {
@@ -37,6 +39,25 @@ public class CollectionTest {
 		System.out.println("list2:"+list2);
 		list2.add("Perl");
 		System.out.println("list2:"+list2);
+		System.out.println("List query using Iterator Block");
+		Iterator itr1 =list2.iterator();
+		while(itr1.hasNext()){
+			System.out.println(itr1.next());
+		}
+		System.out.println(list2);
+		String rm1 = list2.remove(3);
+		
+		System.out.println("Removed element 3 from list2:"+rm1);
+		System.out.println(list2);
+		list2.add(2, "Zero");
+		list2.add(4, "zero");
+		System.out.println("Sorting Array.....");
+		System.out.println(list2);
+		
+		Collections.sort(list2); //collections.sort help to sort the elements
+		System.out.println(list2);
+		Collections.sort(list2,Collections.reverseOrder()); //collection.reverseOrder help to descending order
+		System.out.println(list2);
 		
 	}
 	public void varArgs(String... courses){
@@ -46,4 +67,8 @@ public class CollectionTest {
 			System.out.println(s);
 		}
 	}
+	/*compile error not valid 
+	 * 
+	 * public void varArgs1(String... courses,int... id){
+}*/
 }
