@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.vmware.beginner.CollectionTest;
 import org.vmware.jaxb.Marshall;
 import org.vmware.serializ.Person;
 
@@ -23,6 +24,11 @@ public class MainCaller {
 		doSerial();
 		// do Deserialize the file to objects
 		doDeserial();
+		//Array and List Section
+		CollectionTest cTest = new CollectionTest();
+		cTest.myArray();
+		cTest.myList();
+		
 
 	}
 
