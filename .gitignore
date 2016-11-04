@@ -1,0 +1,5 @@
+# picture
+*.png
+
+#ignore folder
+apachefiles\
