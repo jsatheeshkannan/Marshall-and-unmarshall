@@ -28,6 +28,8 @@ public class MainCaller {
 		CollectionTest cTest = new CollectionTest();
 		cTest.myArray();
 		cTest.myList();
+		cTest.varArgs("Javscript","AngularJS","NodeJS","ReactJS");
+		cTest.varArgs("c","c++","embedded");
 		
 
 	}

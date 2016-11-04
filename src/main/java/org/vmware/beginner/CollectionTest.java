@@ -39,4 +39,11 @@ public class CollectionTest {
 		System.out.println("list2:"+list2);
 		
 	}
+	public void varArgs(String... courses){
+		System.out.println("#### varArg block continue....");
+		System.out.println(courses.length);
+		for(String s: courses){
+			System.out.println(s);
+		}
+	}
 }
