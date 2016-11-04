@@ -8,7 +8,7 @@ public class Person implements Serializable{
 	private int id;
 	private String fname;
 	private String lname;
-	private transient String age;
+	private transient String age; //which you dont want serialize use "transient"
 	private Address address;
 	
 	public int getId() {
