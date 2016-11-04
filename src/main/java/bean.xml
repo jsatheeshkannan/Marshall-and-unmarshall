@@ -13,5 +13,18 @@
 <bean id="marshall" class="org.vmware.jaxb.Marshall">
 	<property name="april" ref="april"></property>
 </bean>
-
+<bean id="person" class="org.vmware.serializ.Person">
+	<property name="id" value="1001"></property>
+	<property name="fname" value="King"></property>
+	<property name="age" value="25"></property>
+	<property name="lname" value="RAJA"></property>
+	<property name="address">
+		<ref bean="address"></ref>
+	</property>
+</bean>
+<bean id="address" class="org.vmware.serializ.Address">
+	<property name="street" value="mg road"></property>
+	<property name="city" value="bangalore"></property>
+	<property name="pincode" value="560070"></property>
+</bean>
 </beans>
