@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -16,12 +17,13 @@ import org.vmware.beginner.CollectionTest;
 import org.vmware.beginner.MultiDimensionArray;
 import org.vmware.beginner.Student;
 import org.vmware.jaxb.Marshall;
+import org.vmware.restnsx.Nsxoperation;
 import org.vmware.serializ.Person;
 
 public class MainCaller {
 	private static ApplicationContext context;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchAlgorithmException {
 		// do Marshall and unMarshall of object
 		doMarshaller();
 		// do Serialize the object to output file
@@ -39,6 +41,20 @@ public class MainCaller {
 		//Single and multi Dimension Array
 		MultiDimensionArray mdarray = new MultiDimensionArray();
 		mdarray.multiArray();
+		//GET request to nsx rest client
+		Nsxoperation nsx = new Nsxoperation();
+		try {
+			nsx.getSegments();
+			nsx.putSegments();
+			nsx.getSegments();
+			nsx.postBaseConfigure();
+			nsx.postMulticasts();
+			nsx.postAdvConfigure();
+			nsx.getMulticasts();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static void sortCompare() {
