@@ -7,10 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.vmware.beginner.CollectionTest;
+import org.vmware.beginner.MultiDimensionArray;
+import org.vmware.beginner.Student;
 import org.vmware.jaxb.Marshall;
 import org.vmware.serializ.Person;
 
@@ -24,14 +28,31 @@ public class MainCaller {
 		doSerial();
 		// do Deserialize the file to objects
 		doDeserial();
-		//Array and List Section
+		// Array and List Section
 		CollectionTest cTest = new CollectionTest();
 		cTest.myArray();
 		cTest.myList();
-		cTest.varArgs("Javscript","AngularJS","NodeJS","ReactJS");
-		cTest.varArgs("c","c++","embedded");
-		
+		cTest.varArgs("Javscript", "AngularJS", "NodeJS", "ReactJS");
+		cTest.varArgs("c", "c++", "embedded");
+		//Sort the Object ArrayList
+		sortCompare();
+		//Single and multi Dimension Array
+		MultiDimensionArray mdarray = new MultiDimensionArray();
+		mdarray.multiArray();
+	}
 
+	private static void sortCompare() {
+		ArrayList<Student> arraylist = new ArrayList<Student>();
+
+		arraylist.add(new Student(223, "Chaitanya", 26));
+		arraylist.add(new Student(245, "Rahul", 24));
+		arraylist.add(new Student(209, "Ajeet", 32));
+
+		//Collections.sort(arraylist);
+
+		for (Student str : arraylist) {
+			System.out.println(str);
+		}
 	}
 
 	private static void doDeserial() {
@@ -49,7 +70,7 @@ public class MainCaller {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			
+
 		}
 
 	}
