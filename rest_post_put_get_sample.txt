@@ -1,0 +1,210 @@
+package com.main;
+
+import org.junit.Assert;
+import org.junit.Test;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class CustomerResourceTest {
+
+	@Test
+	public void testCustomerResource() throws Exception {
+
+		System.out.println("*** Create a new Customer ***");
+		// Create a new customer
+		String newCustomer = "<customer>" + "<first-name>Bill</first-name>" + "<last-name>Burke</last-name>"
+				+ "<street>256 Clarendon Street</street>" + "<city>Boston</city>" + "<state>MA</state>"
+				+ "<zip>02115</zip>" + "<country>USA</country>" + "</customer>";
+
+		URL postUrl = new URL("http://localhost:8080/RestDemo/api/customers");
+		HttpURLConnection connection = (HttpURLConnection) postUrl.openConnection();
+		connection.setDoOutput(true);
+		connection.setInstanceFollowRedirects(false);
+		connection.setRequestMethod("POST");
+		connection.setRequestProperty("Content-Type", "application/xml");
+		OutputStream os = connection.getOutputStream();
+		os.write(newCustomer.getBytes());
+		os.flush();
+
+		Assert.assertEquals(HttpURLConnection.HTTP_CREATED, connection.getResponseCode());
+		System.out.println("Location: " + connection.getHeaderField("Location"));
+		connection.disconnect();
+
+		// Get the new customer
+		System.out.println("*** GET Created Customer **");
+		URL getUrl = new URL("http://localhost:8080/RestDemo/api/customers/1");
+		connection = (HttpURLConnection) getUrl.openConnection();
+		connection.setRequestMethod("GET");
+		System.out.println("Content-Type: " + connection.getContentType());
+		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		String line = reader.readLine();
+		while (line != null) {
+			System.out.println(line);
+			line = reader.readLine();
+		}
+		Assert.assertEquals(HttpURLConnection.HTTP_OK, connection.getResponseCode());
+		connection.disconnect();
+
+		// Update the new customer. Change Bill's name to William
+		String updateCustomer = " <customer id='1'>" + "<first-name>William</first-name>" + "<last-name>Burke</last-name>"
+				+ "<street>256 Clarendon Street</street>" + "<city>Boston</city>" + "<state>MA</state>"
+				+ "<zip>02115</zip>" + "<country>USA</country>" + "</customer>";
+		System.out.println(getUrl.getPath());
+		connection = (HttpURLConnection) getUrl.openConnection();
+		connection.setDoOutput(true);
+		connection.setRequestMethod("PUT");
+		connection.setRequestProperty("Content-Type", "application/xml");
+		os = connection.getOutputStream();
+		os.write(updateCustomer.getBytes());
+		os.flush();
+		Assert.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, connection.getResponseCode());
+		connection.disconnect();
+
+		// Show the update
+		System.out.println("**** After Update ***");
+		connection = (HttpURLConnection) getUrl.openConnection();
+		connection.setRequestMethod("GET");
+		System.out.println("Content-Type: " + connection.getContentType());
+		reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		line = reader.readLine();
+		while (line != null) {
+			System.out.println(line);
+			line = reader.readLine();
+		}
+		Assert.assertEquals(HttpURLConnection.HTTP_OK, connection.getResponseCode());
+		connection.disconnect();
+
+		// Delete the customer
+		connection = (HttpURLConnection) getUrl.openConnection();
+		connection.setRequestMethod("DELETE");
+		Assert.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, connection.getResponseCode());
+		connection.disconnect();
+
+		// Show the update
+		System.out.println("**** After DELETE ***");
+		connection = (HttpURLConnection) getUrl.openConnection();
+		connection.setRequestMethod("GET");
+		Assert.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, connection.getResponseCode());
+		connection.disconnect();
+	}
+}
+
+###POST CURL ####
+
+C:\>curl -v  -X POST -H "content-type:application/xml" --data "<customer><first-
+name>satheesh</first-name><last-name>kannan</last-name><street>8th cross</street
+><city>banglore</city><zip>560070</zip><state>Karnatak</state><country>IN</count
+ry></customer>" http://localhost:8080/RestDemo/api/customers
+
+
+####GET CURL #####
+
+
+C:\>curl -v -X GET http://localhost:8080/RestDemo/api/customers/1
+
+###PUT ####
+
+C:\>curl -v  -X PUT -H "content-type:application/xml" --data "<customer id=\"1\"><first-
+name>satheesh</first-name><last-name>kannans</last-name><street>8th cross</street
+><city>banglore</city><zip>560070</zip><state>Karnatak</state><country>IN</count
+ry></customer>" http://localhost:8080/RestDemo/api/customers/1
+
+####java script with jquery and ajax call #########
+
+/**
+ * 
+ */
+
+var rootUrl="http://localhost:8080/RestDemo/api/customers"
+
+	findAll();
+
+function findAll(){
+	
+	$.ajax({
+			url : rootUrl,
+			type : "GET",
+			data : "application/json",
+			success : renderList
+	})
+	
+	
+	
+}
+function renderList(data){
+	console.log(data);
+}
+
+JAS security,spring security
+
+web.xml add security-constraint
+
+
+
+
+  <servlet-mapping>
+  	<servlet-name>jersey</servlet-name>
+  	<url-pattern>/api/*</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+  	<web-resource-collection>
+	  	<web-resource-name>customer creation</web-resource-name>
+	  	<url-pattern>/customers</url-pattern>
+	  	<http-method>POST</http-method>
+  	</web-resource-collection>
+  	<auth-constraint>
+  		<role-name>admin</role-name>
+  	  	</auth-constraint>
+  	
+  
+  
+  </security-constraint>
+  <login-config>
+	  <auth-method>BASIC</auth-method>
+	  <realm-name>jaxrs</realm-name>
+  </login-config>
+  <security-role>
+  	<role-name>admin</role-name>
+  </security-role>
+</web-app>
+
+servers->tomcat-users.xml ->
+		  <role rolename="admin"/>
+  <user username="tomcat" password="tomcat" roles="admin"/>
+</tomcat-users>
+
+
+
+####DIGEST auth####
+
+nonce,opaque,qop
+WWW-Authenticate →Digest realm="jaxrs", qop="auth", nonce="1469177981767:43e2d308a88be56223742b21296d81cf", opaque="ABA4C3FBC56775F334B12D9E385C1882"
+
+
+
+
+Testing Code for curl:
+
+curl -X POST --header "Content-type:application/xml" --data "<customer id=\"1\"><first-name>Bill</first-name><last-name>Burke</last-name><street>555 Beacon St.</street><city>Boston</city><state>MA</state><zip>02115</zip><country>India</country></customer>" http://localhost:8080/RestDemo/customers
+
+curl -v -X GET http://localhost:8080/RestDemo/customers/1
+
+
+curl -X PUT --header "Content-type:application/xml" --data "<customer id=\"1\"><first-name>Bill</first-name><last-name>Burke</last-name><street>555 Beacon St.</street><city>Boston</city><state>MA</state><zip>02116</zip><country>US</country></customer>" http://localhost:8080/RestDemo/customers/1
+
+----------
+
+M2_HOME=c:\apache-maven-3.2.3
+MAVEN_HOME=c:\apache-maven-3.2.3
+PATH=$PATH:c:\apache-maven-3.2.3\bin
+
+
+
+C:\Users\trainee\Desktop\mapmaven>mvn archtype:generate -DgroupId=com.rest -Dart
+ifactId=RESTfulExample -DarchetypeArtifactId=maven-archetype-webapp -Dinteractiv
+eMode=false
+
+mvn eclipse:eclipse -Dwtpversion=2.0
